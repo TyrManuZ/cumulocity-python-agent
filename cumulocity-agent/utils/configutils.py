@@ -31,7 +31,7 @@ class Configuration():
       self.configuration.add_section(category)
     self.configuration.set(category, key, value)
     with open(self.configPath, 'w') as cfgfile:
-      self.parser.write(cfgfile)
+      self.configuration.write(cfgfile)
 
   def getBootstrapCredentials(self):
     tenant = self.getValue(self.credentialsCategory, self.bootstrapTenant)

@@ -7,6 +7,7 @@ from daemon import Daemon
 from client.bootstrapClient import Bootstrap
 import utils.moduleloader as moduleloader
 from framework.smartrest import SmartRESTMessage
+from core.command import CommandHandler
 
 class Agent(Daemon):
   __sensors = []
@@ -70,7 +71,12 @@ class Agent(Daemon):
     self.__client.subscribe('s/e')
     self.__client.subscribe('s/ds')
 
-    # Load modules
+    # Load core modules
+    commandHandler = CommandHandler(self.serial, self, self.configuration)
+    self.__listeners.append(commandHandler)
+    self.__supportedOperations.update(commandHandler.getSupportedOperations())
+
+    # Load custom modules
     modules = moduleloader.findAgentModules()
     classCache = {}
 
